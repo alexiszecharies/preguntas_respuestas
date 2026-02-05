@@ -60,24 +60,12 @@ if enviar:
         st.error("El email es obligatorio. Ingresá tu correo para enviar las respuestas.")
     else:
         lista_preguntas = [p["pregunta"] for p in PREGUNTAS]
-        sheet_id = os.getenv("GOOGLE_SHEET_ID")
-        creds_path = os.getenv("GOOGLE_CREDENTIALS_PATH", "credentials.json")
         
         # Debug: mostrar info de configuración en consola
         print("=" * 60, file=sys.stderr)
-        print(f"GOOGLE_SHEET_ID: {sheet_id}", file=sys.stderr)
-        print(f"GOOGLE_CREDENTIALS_PATH: {creds_path}", file=sys.stderr)
-        print(f"credentials.json existe: {Path(creds_path).exists()}", file=sys.stderr)
         print(f"Working directory: {os.getcwd()}", file=sys.stderr)
+        print(f"Usando Streamlit Secrets: {hasattr(st, 'secrets') and 'GOOGLE_SHEET_ID' in st.secrets}", file=sys.stderr)
         print("=" * 60, file=sys.stderr)
-
-        if not sheet_id:
-            st.error("No se configuró GOOGLE_SHEET_ID en el archivo .env")
-            st.stop()
-        
-        if not Path(creds_path).exists():
-            st.error(f"No se encontró el archivo de credenciales: {creds_path}")
-            st.stop()
 
         try:
             with st.spinner("Guardando respuestas en Google Sheets..."):

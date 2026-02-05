@@ -21,11 +21,25 @@ def guardar_en_google_sheets(
     import sys
     
     print("[sheets_helper] Inicio de guardar_en_google_sheets", file=sys.stderr)
-    sheet_id = os.getenv("GOOGLE_SHEET_ID")
-    creds_path = os.getenv("GOOGLE_CREDENTIALS_PATH", "credentials.json")
+    
+    # Intentar cargar desde st.secrets (Streamlit Cloud) o desde .env (local)
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets") and "GOOGLE_SHEET_ID" in st.secrets:
+            sheet_id = st.secrets["GOOGLE_SHEET_ID"]
+            use_streamlit_secrets = True
+            print("[sheets_helper] Usando secrets de Streamlit Cloud", file=sys.stderr)
+        else:
+            sheet_id = os.getenv("GOOGLE_SHEET_ID")
+            use_streamlit_secrets = False
+            print("[sheets_helper] Usando .env local", file=sys.stderr)
+    except:
+        sheet_id = os.getenv("GOOGLE_SHEET_ID")
+        use_streamlit_secrets = False
+        print("[sheets_helper] Usando .env local", file=sys.stderr)
 
-    if not sheet_id or not Path(creds_path).exists():
-        return False, "No configurado: añade GOOGLE_SHEET_ID y credentials.json (ver README)."
+    if not sheet_id:
+        return False, "No configurado: añade GOOGLE_SHEET_ID en .env o en Streamlit Secrets."
 
     try:
         print("[sheets_helper] Importando gspread...", file=sys.stderr)
@@ -41,7 +55,21 @@ def guardar_en_google_sheets(
             "https://www.googleapis.com/auth/spreadsheets",
             "https://www.googleapis.com/auth/drive",
         ]
-        creds = Credentials.from_service_account_file(creds_path, scopes=scopes)
+        
+        # Cargar credenciales desde Streamlit secrets o desde archivo local
+        if use_streamlit_secrets:
+            print("[sheets_helper] Cargando credenciales desde st.secrets", file=sys.stderr)
+            import streamlit as st
+            creds = Credentials.from_service_account_info(
+                st.secrets["gcp_service_account"],
+                scopes=scopes
+            )
+        else:
+            print("[sheets_helper] Cargando credenciales desde archivo", file=sys.stderr)
+            creds_path = os.getenv("GOOGLE_CREDENTIALS_PATH", "credentials.json")
+            if not Path(creds_path).exists():
+                return False, f"No se encontró {creds_path}. Ver README para configurar."
+            creds = Credentials.from_service_account_file(creds_path, scopes=scopes)
         
         print("[sheets_helper] Autorizando con gspread...", file=sys.stderr)
         gc = gspread.authorize(creds)
