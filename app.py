@@ -39,7 +39,76 @@ st.markdown("""
     --text-color: #0d1b2a !important;
 }
 
-/* ── Base ── */
+/* ── Fondo animado con formas flotantes ── */
+[data-testid="stAppViewContainer"]::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 15% 20%, rgba(26,181,200,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 75%, rgba(26,100,180,0.10) 0%, transparent 50%),
+        linear-gradient(160deg, #e8f4f8 0%, #f0f4f8 50%, #eaf0f8 100%);
+}
+
+.floating-shapes {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+.shape {
+    position: absolute;
+    border: 2px solid rgba(26, 181, 200, 0.25);
+    border-radius: 6px;
+    animation: floatShape linear infinite;
+    opacity: 0;
+}
+.shape.circle { border-radius: 50%; }
+
+/* Diferentes tamaños, posiciones y duraciones */
+.shape:nth-child(1)  { width:55px;  height:55px;  left:5%;   top:15%; animation-duration:14s; animation-delay:0s;   }
+.shape:nth-child(2)  { width:35px;  height:35px;  left:88%;  top:8%;  animation-duration:18s; animation-delay:2s;   }
+.shape:nth-child(3)  { width:70px;  height:70px;  left:75%;  top:60%; animation-duration:20s; animation-delay:1s;   }
+.shape:nth-child(4)  { width:28px;  height:28px;  left:20%;  top:72%; animation-duration:16s; animation-delay:4s;   }
+.shape:nth-child(5)  { width:45px;  height:45px;  left:50%;  top:85%; animation-duration:22s; animation-delay:0.5s; }
+.shape:nth-child(6)  { width:20px;  height:20px;  left:93%;  top:40%; animation-duration:12s; animation-delay:3s;   }
+.shape:nth-child(7)  { width:60px;  height:60px;  left:35%;  top:5%;  animation-duration:25s; animation-delay:6s;   }
+.shape:nth-child(8)  { width:38px;  height:38px;  left:62%;  top:30%; animation-duration:17s; animation-delay:1.5s; }
+.shape:nth-child(9)  { width:22px;  height:22px;  left:8%;   top:50%; animation-duration:19s; animation-delay:5s;   }
+.shape:nth-child(10) { width:50px;  height:50px;  left:78%;  top:88%; animation-duration:23s; animation-delay:2.5s; }
+
+@keyframes floatShape {
+    0%   { transform: translateY(0px)   rotate(0deg);   opacity: 0;    }
+    10%  { opacity: 0.8; }
+    90%  { opacity: 0.8; }
+    100% { transform: translateY(-80px) rotate(25deg);  opacity: 0;    }
+}
+
+/* Hacer que el contenido quede por encima de las formas */
+[data-testid="stMainBlockContainer"],
+[data-testid="stMain"] > div {
+    position: relative;
+    z-index: 1;
+}
+</style>
+
+<div class="floating-shapes">
+  <div class="shape"></div>
+  <div class="shape circle"></div>
+  <div class="shape"></div>
+  <div class="shape circle"></div>
+  <div class="shape"></div>
+  <div class="shape circle"></div>
+  <div class="shape"></div>
+  <div class="shape circle"></div>
+  <div class="shape"></div>
+  <div class="shape circle"></div>
+</div>
+
+<style>
 html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
     background-color: #f0f4f8 !important;
     color: #0d1b2a !important;
