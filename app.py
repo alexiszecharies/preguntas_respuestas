@@ -1223,11 +1223,23 @@ def check_condicional(pregunta: dict) -> bool:
 def render_pregunta(p: dict):
     """Renderiza una pregunta y guarda la respuesta en session_state."""
     key = p["key"]
-    texto = p["texto"]
     tipo = p["tipo"]
 
     if not check_condicional(p):
         return
+
+    # Etiqueta de tipo visible para el respondente
+    _etiquetas = {
+        "checkboxes":  " *(selección múltiple)*",
+        "multiselect": " *(selección múltiple)*",
+        "radio":       " *(opción única)*",
+        "radio_si_no": "",
+        "vf":          "",
+        "slider":      "",
+        "ranking":     "",
+        "text":        "",
+    }
+    texto = p["texto"] + _etiquetas.get(tipo, "")
 
     if tipo == "text":
         val = st.text_input(
@@ -1331,7 +1343,7 @@ def validar_modulo(modulo: dict) -> list[str]:
 
 def pantalla_final():
     st.title("🎉 ¡Muchas gracias!")
-    st.success("Tus respuestas fueron guardadas correctamente en la planilla.")
+    st.success("Tus respuestas fueron guardadas.")
     st.balloons()
     if st.button("Completar otra encuesta"):
         st.session_state.modulo_actual = 0

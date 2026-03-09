@@ -5,7 +5,6 @@ Ejecutar: python test_write_sheet.py
 import os
 import sys
 
-# Asegurar que se carga .env desde la carpeta del proyecto
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 from dotenv import load_dotenv
@@ -13,14 +12,22 @@ load_dotenv()
 
 from sheets_helper import guardar_en_google_sheets
 
-# Datos de prueba (mismas preguntas que en app.py)
-PREGUNTAS_TEXTO = [
-    "¿Con qué frecuencia usás este servicio?",
-    "¿Qué tan satisfecho estás con la atención?",
-    "¿Qué aspecto te gustaría que mejoremos primero?",
-    "¿Recomendarías este servicio a otra persona?",
+# Simula una respuesta real con columnas representativas de los módulos
+COLUMNAS = [
+    "email",
+    "unesco_cuidado",
+    "unesco_ley_primaria",
+    "pais_incidentes_2025",
+    "eutic_frecuencia_internet",
+    "eutic_confianza_estado",
+    "mck_areas_ia",
+    "disp_ciberdelito_futuro",
+    "disp_exposicion_personal",
+    "perfil_dispositivos",
+    "perfil_def_phishing",
 ]
-respuestas_test = {p: "[TEST]" for p in PREGUNTAS_TEXTO}
+
+respuestas_test = {col: "[TEST]" for col in COLUMNAS}
 email_test = "test-write@ejemplo.com"
 
 print("GOOGLE_SHEET_ID:", os.getenv("GOOGLE_SHEET_ID") or "(no definido)")
@@ -29,7 +36,7 @@ print("credentials.json existe:", os.path.exists("credentials.json"))
 print()
 print("Escribiendo fila de prueba en la Sheet...")
 
-ok, msg = guardar_en_google_sheets(email_test, respuestas_test, PREGUNTAS_TEXTO)
+ok, msg = guardar_en_google_sheets(email_test, respuestas_test, COLUMNAS)
 
 if ok:
     print("OK:", msg)
