@@ -24,194 +24,182 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ESTILOS – basados en la identidad visual de kaidenteam.com
-# Paleta: fondo #0d1b2a (navy oscuro), acento #2ecc8e (verde-teal),
-#         texto claro #e8edf2, bordes #1e3248
+# ESTILOS – identidad visual de kaidenteam.com
+# Paleta real: fondo #f0f4f8 (gris-azul claro), texto #0d1b2a (navy),
+#              acento teal #1ab5c8, azul marino #1a2f6e
 # ─────────────────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-/* ── Fondo general ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Base ── */
 html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
-    background-color: #0d1b2a !important;
-    color: #e8edf2 !important;
+    background-color: #f0f4f8 !important;
+    color: #0d1b2a !important;
+    font-family: 'Inter', sans-serif !important;
 }
-[data-testid="stHeader"] {
-    background-color: #0d1b2a !important;
-}
-
-/* ── Bloque central del contenido ── */
-[data-testid="stMainBlockContainer"] {
-    background-color: #0d1b2a !important;
-    padding-top: 2rem;
-}
-
-/* ── Sidebar ── */
-[data-testid="stSidebar"] {
-    background-color: #081422 !important;
-}
+[data-testid="stHeader"] { background-color: #ffffff !important; border-bottom: 1px solid #dce4ed; }
+[data-testid="stMainBlockContainer"] { background-color: #f0f4f8 !important; padding-top: 1.5rem; }
 
 /* ── Títulos ── */
-h1 { color: #2ecc8e !important; font-weight: 700 !important; letter-spacing: -0.5px; }
-h2, h3 { color: #e8edf2 !important; }
+h1 {
+    color: #0d1b2a !important;
+    font-weight: 800 !important;
+    font-size: 2rem !important;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+h1 em { color: #1ab5c8; font-style: normal; }
+h2, h3 { color: #0d1b2a !important; font-weight: 700 !important; }
 
-/* ── Logo header ── */
+/* ── Header de marca ── */
 .kaiden-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 0.5rem 0 1.5rem 0;
-    border-bottom: 1px solid #1e3248;
-    margin-bottom: 1.5rem;
+    gap: 14px;
+    padding: 0.75rem 0 1.25rem 0;
+    border-bottom: 1px solid #dce4ed;
+    margin-bottom: 1.75rem;
 }
-.kaiden-header span {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #2ecc8e;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-.kaiden-header small {
-    display: block;
+.kaiden-subtext {
     font-size: 0.72rem;
-    color: #7a9bb5;
-    text-transform: none;
-    letter-spacing: 0;
+    color: #6b8099;
     font-weight: 400;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
 }
 
-/* ── Etiquetas de preguntas ── */
+/* ── Tarjeta blanca que envuelve el formulario ── */
+[data-testid="stForm"], .block-container {
+    background-color: #f0f4f8 !important;
+}
+
+/* ── Etiquetas ── */
 label, [data-testid="stWidgetLabel"] p,
 [data-testid="stRadio"] label,
 [data-testid="stCheckbox"] label {
-    color: #e8edf2 !important;
-    font-size: 0.97rem !important;
+    color: #0d1b2a !important;
+    font-size: 0.96rem !important;
 }
 
 /* ── Inputs de texto ── */
 input[type="text"], textarea {
-    background-color: #1a2e42 !important;
-    color: #e8edf2 !important;
-    border: 1px solid #2a4560 !important;
-    border-radius: 6px !important;
+    background-color: #ffffff !important;
+    color: #0d1b2a !important;
+    border: 1.5px solid #c8d6e5 !important;
+    border-radius: 8px !important;
 }
 input[type="text"]:focus, textarea:focus {
-    border-color: #2ecc8e !important;
-    box-shadow: 0 0 0 2px rgba(46, 204, 142, 0.2) !important;
+    border-color: #1ab5c8 !important;
+    box-shadow: 0 0 0 3px rgba(26, 181, 200, 0.15) !important;
 }
 
 /* ── Radio buttons ── */
-[data-testid="stRadio"] > div {
-    gap: 0.3rem;
-}
+[data-testid="stRadio"] > div { gap: 0.35rem; }
 [data-testid="stRadio"] label {
-    background-color: #1a2e42;
-    border: 1px solid #2a4560;
-    border-radius: 6px;
-    padding: 6px 12px !important;
-    transition: border-color 0.15s;
+    background-color: #ffffff;
+    border: 1.5px solid #c8d6e5;
+    border-radius: 8px;
+    padding: 7px 14px !important;
+    transition: all 0.15s;
+    color: #0d1b2a !important;
 }
 [data-testid="stRadio"] label:hover {
-    border-color: #2ecc8e !important;
+    border-color: #1ab5c8 !important;
+    background-color: #e8f8fa !important;
 }
 
 /* ── Checkboxes ── */
 [data-testid="stCheckbox"] label {
-    background-color: #1a2e42;
-    border: 1px solid #2a4560;
-    border-radius: 6px;
-    padding: 5px 10px !important;
-    margin-bottom: 3px;
+    background-color: #ffffff;
+    border: 1.5px solid #c8d6e5;
+    border-radius: 8px;
+    padding: 6px 12px !important;
+    margin-bottom: 4px;
+    color: #0d1b2a !important;
 }
 [data-testid="stCheckbox"] label:hover {
-    border-color: #2ecc8e !important;
+    border-color: #1ab5c8 !important;
+    background-color: #e8f8fa !important;
 }
 
 /* ── Multiselect ── */
 [data-testid="stMultiSelect"] > div > div {
-    background-color: #1a2e42 !important;
-    border: 1px solid #2a4560 !important;
-    border-radius: 6px !important;
-    color: #e8edf2 !important;
+    background-color: #ffffff !important;
+    border: 1.5px solid #c8d6e5 !important;
+    border-radius: 8px !important;
+    color: #0d1b2a !important;
 }
 span[data-baseweb="tag"] {
-    background-color: #1e4d38 !important;
-    color: #2ecc8e !important;
-    border: 1px solid #2ecc8e !important;
+    background-color: #d0f0f5 !important;
+    color: #0d7a8a !important;
+    border: 1px solid #1ab5c8 !important;
+    border-radius: 4px !important;
 }
 
 /* ── Selectbox (ranking) ── */
 [data-testid="stSelectbox"] > div > div {
-    background-color: #1a2e42 !important;
-    border: 1px solid #2a4560 !important;
-    color: #e8edf2 !important;
-    border-radius: 6px !important;
+    background-color: #ffffff !important;
+    border: 1.5px solid #c8d6e5 !important;
+    color: #0d1b2a !important;
+    border-radius: 8px !important;
 }
 
 /* ── Slider ── */
-[data-testid="stSlider"] [role="slider"] {
-    background-color: #2ecc8e !important;
-}
+[data-testid="stSlider"] [role="slider"] { background-color: #1ab5c8 !important; }
 [data-testid="stSlider"] [data-testid="stSliderTrack"] > div:first-child {
-    background-color: #2ecc8e !important;
+    background-color: #1ab5c8 !important;
 }
 
-/* ── Botón primario (Siguiente / Enviar) ── */
+/* ── Botón primario ── */
 [data-testid="stButton"] > button[kind="primary"] {
-    background-color: #2ecc8e !important;
-    color: #0d1b2a !important;
+    background-color: #1ab5c8 !important;
+    color: #ffffff !important;
     border: none !important;
-    border-radius: 6px !important;
+    border-radius: 50px !important;
     font-weight: 700 !important;
     font-size: 1rem !important;
-    padding: 0.6rem 1.2rem !important;
-    transition: background-color 0.2s;
+    padding: 0.65rem 1.8rem !important;
+    transition: background-color 0.2s, transform 0.1s;
+    letter-spacing: 0.3px;
 }
 [data-testid="stButton"] > button[kind="primary"]:hover {
-    background-color: #27b87e !important;
+    background-color: #159eb0 !important;
+    transform: translateY(-1px);
 }
 
-/* ── Botón secundario (Anterior) ── */
+/* ── Botón secundario ── */
 [data-testid="stButton"] > button:not([kind="primary"]) {
     background-color: transparent !important;
-    color: #7a9bb5 !important;
-    border: 1px solid #2a4560 !important;
-    border-radius: 6px !important;
+    color: #6b8099 !important;
+    border: 1.5px solid #c8d6e5 !important;
+    border-radius: 50px !important;
     font-weight: 500 !important;
 }
 [data-testid="stButton"] > button:not([kind="primary"]):hover {
-    border-color: #2ecc8e !important;
-    color: #2ecc8e !important;
+    border-color: #1ab5c8 !important;
+    color: #1ab5c8 !important;
 }
 
 /* ── Barra de progreso ── */
-[data-testid="stProgressBar"] > div > div {
-    background-color: #2ecc8e !important;
-}
-[data-testid="stProgressBar"] > div {
-    background-color: #1a2e42 !important;
-}
+[data-testid="stProgressBar"] > div > div { background-color: #1ab5c8 !important; }
+[data-testid="stProgressBar"] > div { background-color: #c8d6e5 !important; border-radius: 4px; }
 
 /* ── Divider ── */
-hr {
-    border-color: #1e3248 !important;
-}
+hr { border-color: #dce4ed !important; }
 
-/* ── Mensajes de error / éxito ── */
-[data-testid="stAlert"] {
-    border-radius: 6px !important;
-}
+/* ── Alerts ── */
+[data-testid="stAlert"] { border-radius: 8px !important; }
 
-/* ── Caption / texto secundario ── */
-[data-testid="stCaptionContainer"] p,
-small, .stCaption {
-    color: #7a9bb5 !important;
-}
+/* ── Caption ── */
+[data-testid="stCaptionContainer"] p, small, .stCaption { color: #6b8099 !important; }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0d1b2a; }
-::-webkit-scrollbar-thumb { background: #2a4560; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #2ecc8e; }
+::-webkit-scrollbar-track { background: #f0f4f8; }
+::-webkit-scrollbar-thumb { background: #c8d6e5; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #1ab5c8; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -1534,11 +1522,11 @@ def validar_modulo(modulo: dict) -> list[str]:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def pantalla_final():
-    st.markdown("""
-    <div class="kaiden-header">
-        <span>🔐 KAIDEN TEAM <small>Cyber Window · Encuesta</small></span>
-    </div>
-    """, unsafe_allow_html=True)
+    col_logo, _ = st.columns([1, 4])
+    with col_logo:
+        st.image("logo_kaiden.png", width=160)
+    st.markdown("<div class='kaiden-subtext'>Cyber Window · Encuesta</div>", unsafe_allow_html=True)
+    st.divider()
     st.title("¡Muchas gracias!")
     st.markdown(
         "<p style='color:#7a9bb5; font-size:1.05rem;'>Tus respuestas fueron guardadas correctamente. "
@@ -1588,12 +1576,12 @@ def enviar_respuestas():
 # RENDER PRINCIPAL
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Header de marca
-st.markdown("""
-<div class="kaiden-header">
-    <span>🔐 KAIDEN TEAM <small>Cyber Window · Encuesta</small></span>
-</div>
-""", unsafe_allow_html=True)
+# Header de marca con logo real
+col_logo, _ = st.columns([1, 4])
+with col_logo:
+    st.image("logo_kaiden.png", width=160)
+st.markdown("<div class='kaiden-subtext'>Cyber Window · Encuesta</div>", unsafe_allow_html=True)
+st.divider()
 
 if st.session_state.enviado:
     pantalla_final()
