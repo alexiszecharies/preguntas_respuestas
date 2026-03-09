@@ -32,6 +32,13 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* ── Override Streamlit primary color (evita el rojo en sliders, focus, etc.) ── */
+:root {
+    --primary-color: #1ab5c8 !important;
+    --secondary-background-color: #ffffff !important;
+    --text-color: #0d1b2a !important;
+}
+
 /* ── Base ── */
 html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
     background-color: #f0f4f8 !important;
@@ -166,9 +173,37 @@ span[data-baseweb="tag"] {
 }
 
 /* ── Slider ── */
-[data-testid="stSlider"] [role="slider"] { background-color: #1ab5c8 !important; }
+/* Track completo (fondo gris) */
+[data-testid="stSlider"] [data-testid="stSliderTrack"] {
+    background-color: #c8d6e5 !important;
+}
+/* Parte activa del track (izquierda del thumb) */
+[data-testid="stSlider"] [data-testid="stSliderTrack"] > div,
 [data-testid="stSlider"] [data-testid="stSliderTrack"] > div:first-child {
     background-color: #1ab5c8 !important;
+}
+/* Thumb (círculo) */
+[data-testid="stSlider"] [role="slider"] {
+    background-color: #1ab5c8 !important;
+    border: 3px solid #ffffff !important;
+    box-shadow: 0 0 0 2px #1ab5c8 !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+[data-testid="stSlider"] [role="slider"]:focus {
+    box-shadow: 0 0 0 3px rgba(26, 181, 200, 0.35) !important;
+}
+/* Número del valor actual encima del thumb */
+[data-testid="stSlider"] [data-testid="stTickBarMin"],
+[data-testid="stSlider"] [data-testid="stTickBarMax"],
+[data-testid="stSlider"] div[data-testid="stThumbValue"] {
+    color: #1ab5c8 !important;
+    font-weight: 600 !important;
+}
+/* Eliminar el color rojo heredado del theme de Streamlit */
+[data-testid="stSlider"] * {
+    --slider-color: #1ab5c8 !important;
+    accent-color: #1ab5c8 !important;
 }
 
 /* ── Botón primario ── */
