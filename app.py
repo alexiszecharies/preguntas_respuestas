@@ -105,9 +105,19 @@ input[type="text"]:focus, textarea:focus {
     transition: all 0.15s;
     color: #0d1b2a !important;
 }
+[data-testid="stRadio"] label p,
+[data-testid="stRadio"] label div,
+[data-testid="stRadio"] label span {
+    color: #0d1b2a !important;
+}
 [data-testid="stRadio"] label:hover {
     border-color: #1ab5c8 !important;
     background-color: #e8f8fa !important;
+}
+[data-testid="stRadio"] label:hover p,
+[data-testid="stRadio"] label:hover div,
+[data-testid="stRadio"] label:hover span {
+    color: #0d1b2a !important;
 }
 
 /* ── Checkboxes ── */
@@ -119,9 +129,18 @@ input[type="text"]:focus, textarea:focus {
     margin-bottom: 4px;
     color: #0d1b2a !important;
 }
+[data-testid="stCheckbox"] label p,
+[data-testid="stCheckbox"] label div,
+[data-testid="stCheckbox"] label span {
+    color: #0d1b2a !important;
+}
 [data-testid="stCheckbox"] label:hover {
     border-color: #1ab5c8 !important;
     background-color: #e8f8fa !important;
+}
+[data-testid="stCheckbox"] label:hover p,
+[data-testid="stCheckbox"] label:hover span {
+    color: #0d1b2a !important;
 }
 
 /* ── Multiselect ── */
@@ -194,6 +213,17 @@ hr { border-color: #dce4ed !important; }
 
 /* ── Caption ── */
 [data-testid="stCaptionContainer"] p, small, .stCaption { color: #6b8099 !important; }
+
+/* ── Forzar texto oscuro en todos los widgets ── */
+[data-testid="stWidgetLabel"] p,
+[data-testid="stWidgetLabel"] span,
+[data-testid="stWidgetLabel"] div,
+[data-baseweb="radio"] span,
+[data-baseweb="checkbox"] span,
+[data-baseweb="radio"] p,
+[data-baseweb="checkbox"] p {
+    color: #0d1b2a !important;
+}
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
@@ -1577,6 +1607,7 @@ def enviar_respuestas():
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Header de marca con logo real
+st.markdown("<div style='padding-top: 1.5rem;'></div>", unsafe_allow_html=True)
 col_logo, _ = st.columns([1, 4])
 with col_logo:
     st.image("logo_kaiden.png", width=160)
@@ -1607,26 +1638,38 @@ else:
     st.divider()
 
     # Botones de navegación
-    col_prev, col_next = st.columns([1, 3])
+    es_ultimo = actual == total - 1
+    label = "Enviar respuestas ✅" if es_ultimo else "Siguiente →"
 
-    with col_prev:
-        if actual > 0:
+    if actual > 0:
+        col_prev, col_mid, col_next = st.columns([2, 1, 2])
+        with col_prev:
             if st.button("← Anterior", use_container_width=True):
                 st.session_state.modulo_actual -= 1
                 st.rerun()
-
-    with col_next:
-        es_ultimo = actual == total - 1
-        label = "Enviar respuestas ✅" if es_ultimo else "Siguiente →"
-
-        if st.button(label, type="primary", use_container_width=True):
-            errores = validar_modulo(modulo)
-            if errores:
-                for e in errores:
-                    st.error(e)
-            else:
-                if es_ultimo:
-                    enviar_respuestas()
+        with col_next:
+            if st.button(label, type="primary", use_container_width=True):
+                errores = validar_modulo(modulo)
+                if errores:
+                    for e in errores:
+                        st.error(e)
                 else:
-                    st.session_state.modulo_actual += 1
-                    st.rerun()
+                    if es_ultimo:
+                        enviar_respuestas()
+                    else:
+                        st.session_state.modulo_actual += 1
+                        st.rerun()
+    else:
+        _, col_btn, _ = st.columns([1, 2, 1])
+        with col_btn:
+            if st.button(label, type="primary", use_container_width=True):
+                errores = validar_modulo(modulo)
+                if errores:
+                    for e in errores:
+                        st.error(e)
+                else:
+                    if es_ultimo:
+                        enviar_respuestas()
+                    else:
+                        st.session_state.modulo_actual += 1
+                        st.rerun()
