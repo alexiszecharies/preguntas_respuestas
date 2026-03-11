@@ -1505,6 +1505,14 @@ MODULOS = [
 # ESTADO DE SESIÓN
 # ─────────────────────────────────────────────────────────────────────────────
 
+def scroll_to_top():
+    """Inyecta JS para volver al inicio de la página antes de rerun."""
+    st.components.v1.html(
+        "<script>window.parent.document.querySelector('[data-testid=\"stMainBlockContainer\"]')"
+        ".scrollTo({top: 0, behavior: 'instant'});</script>",
+        height=0,
+    )
+
 def init_state():
     if "modulo_actual" not in st.session_state:
         st.session_state.modulo_actual = 0
@@ -1750,6 +1758,7 @@ else:
         with col_prev:
             if st.button("← Anterior", use_container_width=True):
                 st.session_state.modulo_actual -= 1
+                scroll_to_top()
                 st.rerun()
         with col_next:
             if st.button(label, type="primary", use_container_width=True):
@@ -1762,6 +1771,7 @@ else:
                         enviar_respuestas()
                     else:
                         st.session_state.modulo_actual += 1
+                        scroll_to_top()
                         st.rerun()
     else:
         _, col_btn, _ = st.columns([1, 2, 1])
@@ -1776,4 +1786,5 @@ else:
                         enviar_respuestas()
                     else:
                         st.session_state.modulo_actual += 1
+                        scroll_to_top()
                         st.rerun()
