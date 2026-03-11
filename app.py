@@ -1684,8 +1684,29 @@ def pantalla_final():
 # ENVÍO FINAL
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _build_master_columns() -> list[str]:
+    """
+    Genera la lista canónica de columnas en el orden exacto del formulario,
+    expandiendo las preguntas tipo 'ranking' en sus sub-columnas.
+    Siempre incluye todas las preguntas, independientemente de condicionales.
+    """
+    cols = []
+    for modulo in MODULOS:
+        for p in modulo["preguntas"]:
+            if p["tipo"] == "ranking":
+                for i in range(1, len(p["opciones"]) + 1):
+                    lugar = ["1er lugar", "2do lugar", "3er lugar", "4to lugar"][i - 1]
+                    cols.append(f"{p['key']}_{lugar}")
+            else:
+                cols.append(p["key"])
+    return cols
+
+MASTER_COLUMNS = _build_master_columns()
+
+
 def enviar_respuestas():
-    """Aplana respuestas y las envía a Google Sheets."""
+    """Aplana respuestas y las envía a Google Sheets usando columnas fijas."""
+    # Aplanar todo a strings
     respuestas_planas = {}
     for key, val in st.session_state.respuestas.items():
         if isinstance(val, list):
@@ -1697,10 +1718,9 @@ def enviar_respuestas():
             respuestas_planas[key] = val
 
     email = st.session_state.respuestas.get("email", "")
-    columnas = list(respuestas_planas.keys())
 
     with st.spinner("Guardando respuestas en Google Sheets..."):
-        ok, msg = guardar_en_google_sheets(email, respuestas_planas, columnas)
+        ok, msg = guardar_en_google_sheets(email, respuestas_planas, MASTER_COLUMNS)
 
     if ok:
         st.session_state.enviado = True

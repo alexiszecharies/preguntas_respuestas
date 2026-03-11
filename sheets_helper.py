@@ -76,7 +76,8 @@ def guardar_en_google_sheets(
         if not existing_headers:
             worksheet.append_row(headers)
 
-        row = [respuestas.get(p, "") for p in preguntas] + [datetime.now().isoformat()]
+        # Siempre escribir todas las columnas en orden fijo (vacío si no hay valor)
+        row = [str(respuestas.get(p, "")) for p in preguntas] + [datetime.now().isoformat()]
         worksheet.append_row(row)
 
         return True, "Respuestas guardadas correctamente en Google Sheets."
