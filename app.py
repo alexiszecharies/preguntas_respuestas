@@ -1506,12 +1506,8 @@ MODULOS = [
 # ─────────────────────────────────────────────────────────────────────────────
 
 def scroll_to_top():
-    """Inyecta JS para volver al inicio de la página antes de rerun."""
-    st.components.v1.html(
-        "<script>window.parent.document.querySelector('[data-testid=\"stMainBlockContainer\"]')"
-        ".scrollTo({top: 0, behavior: 'instant'});</script>",
-        height=0,
-    )
+    """Marca el flag para que al inicio del próximo render se haga scroll al top."""
+    st.session_state["_scroll_top"] = True
 
 def init_state():
     if "modulo_actual" not in st.session_state:
@@ -1717,6 +1713,24 @@ def enviar_respuestas():
 # ─────────────────────────────────────────────────────────────────────────────
 # RENDER PRINCIPAL
 # ─────────────────────────────────────────────────────────────────────────────
+
+# Scroll al top si viene de navegación entre módulos
+if st.session_state.pop("_scroll_top", False):
+    st.components.v1.html(
+        """<script>
+        setTimeout(function() {
+            const targets = [
+                window.parent.document.querySelector('[data-testid="stMainBlockContainer"]'),
+                window.parent.document.querySelector('[data-testid="stMain"]'),
+                window.parent.document.querySelector('.main'),
+                window.parent.document.body,
+            ];
+            targets.forEach(el => { if (el) el.scrollTop = 0; });
+            window.parent.scrollTo(0, 0);
+        }, 50);
+        </script>""",
+        height=0,
+    )
 
 # Header de marca con logo real
 st.markdown("<div style='padding-top: 1.5rem;'></div>", unsafe_allow_html=True)
