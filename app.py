@@ -360,75 +360,13 @@ MODULOS = [
     # ── MÓDULO 0: Datos del participante ─────────────────────────────────────
     {
         "titulo": "Datos del participante",
-        "descripcion": "Antes de comenzar, completá tus datos.",
+        "descripcion": "Antes de comenzar, ingresá tu email.",
         "preguntas": [
             {
                 "key": "email",
                 "tipo": "text",
                 "texto": "Email (obligatorio)",
                 "placeholder": "tu@email.com",
-            },
-            {
-                "key": "demo_edad_rango",
-                "tipo": "radio",
-                "texto": "Rango de edad",
-                "opciones": [
-                    "18–24", "25–34", "35–44", "45–54", "55–64", "65 o más",
-                ],
-            },
-            {
-                "key": "demo_genero",
-                "tipo": "radio",
-                "texto": "Género",
-                "opciones": [
-                    "Masculino", "Femenino", "Otro",
-                ],
-            },
-            {
-                "key": "demo_residencia",
-                "tipo": "radio",
-                "texto": "País de residencia",
-                "opciones": ["Uruguay", "Extranjero"],
-            },
-            {
-                "key": "demo_departamento",
-                "tipo": "selectbox",
-                "texto": "Departamento",
-                "opciones": [
-                    "Artigas", "Canelones", "Cerro Largo", "Colonia",
-                    "Durazno", "Flores", "Florida", "Lavalleja",
-                    "Maldonado", "Montevideo", "Paysandú", "Río Negro",
-                    "Rivera", "Rocha", "Salto", "San José",
-                    "Soriano", "Tacuarembó", "Treinta y Tres",
-                ],
-                "condicional": {
-                    "trigger_key": "demo_residencia",
-                    "trigger_values": ["Uruguay"],
-                },
-            },
-            {
-                "key": "demo_ciudad",
-                "tipo": "text",
-                "texto": "Ciudad o barrio",
-                "placeholder": "Ej: Pocitos, Punta del Este...",
-                "condicional": {
-                    "trigger_key": "demo_residencia",
-                    "trigger_values": ["Uruguay"],
-                },
-            },
-            {
-                "key": "demo_nivel_educativo",
-                "tipo": "radio",
-                "texto": "Nivel educativo máximo alcanzado",
-                "opciones": [
-                    "Primaria incompleta",
-                    "Primaria completa",
-                    "Secundaria incompleta",
-                    "Secundaria completa",
-                    "Terciaria / Universitaria incompleta",
-                    "Terciaria / Universitaria completa",
-                    "Posgrado",
-                ],
             },
         ],
     },
@@ -1560,6 +1498,204 @@ MODULOS = [
                     "Por falta de tiempo para más procedimientos y controles",
                     "No percibo ninguna barrera",
                 ],
+            },
+        ],
+    },
+
+    # ── MÓDULO 7: Dato fundamental – CI ──────────────────────────────────────
+    {
+        "titulo": "Mirada 7",
+        "descripcion": "Datos socioeconómicos y demográficos del participante.",
+        "preguntas": [
+            # ── Año de nacimiento ────────────────────────────────────────────
+            {
+                "key": "ci_anio_nacimiento",
+                "tipo": "selectbox",
+                "texto": "¿En qué año nació?",
+                "opciones": [str(a) for a in range(2008, 1939, -1)],
+            },
+            # ── Sexo al nacer ────────────────────────────────────────────────
+            {
+                "key": "ci_sexo",
+                "tipo": "radio",
+                "texto": "Sexo al nacer",
+                "opciones": ["Hombre", "Mujer"],
+            },
+            # ── Grado de educación ───────────────────────────────────────────
+            {
+                "key": "ci_educacion",
+                "tipo": "radio",
+                "texto": "Grado de educación alcanzado hasta el momento",
+                "opciones": [
+                    "Ciclo básico de educación secundaria, técnica o militar incompleta",
+                    "Ciclo básico de educación secundaria, técnica o militar completa",
+                    "Bachillerato de educación secundaria, técnica o militar incompleta",
+                    "Bachillerato de educación secundaria, técnica o militar completa",
+                    "Educación terciaria incompleta (Universidad, Magisterio, Profesorado)",
+                    "Educación terciaria completa (Universidad, Magisterio, Profesorado)",
+                    "Maestría o Doctorado completo",
+                ],
+            },
+            # ── Situación laboral ────────────────────────────────────────────
+            {
+                "key": "ci_situacion_laboral",
+                "tipo": "radio",
+                "texto": "¿Cuál de estas situaciones describe mejor su situación laboral?",
+                "opciones": [
+                    "Estudiando o capacitándose",
+                    "Empleado (asalariado público o privado) que depende de un superior que está en Uruguay",
+                    "Empleado (asalariado público o privado) que depende de un superior que está fuera del país",
+                    "Empleado (asalariado público o privado) con un equipo de colaboradores a cargo que está en Uruguay",
+                    "Empleado (asalariado público o privado) con un equipo de colaboradores que está total o parcialmente fuera de Uruguay",
+                    "Cuenta propia con local",
+                    "Profesional independiente",
+                    "Ayudando a un miembro de la familia en un emprendimiento familiar",
+                    "Desempleado (sin empleo o buscando trabajo)",
+                    "Jubilado o pensionista",
+                    "En el servicio militar",
+                    "Se dedica a las tareas del hogar",
+                    "Enfermo o incapacitado por largo tiempo o de manera permanente",
+                    "Otra situación",
+                ],
+            },
+            # ── Región con la que trabaja (condicional) ──────────────────────
+            {
+                "key": "ci_region_trabajo",
+                "tipo": "selectbox",
+                "texto": "¿Con qué región trabaja su superior / equipo fuera del país?",
+                "opciones": [
+                    "Estados Unidos: Costa Este",
+                    "Estados Unidos: Costa Oeste",
+                    "América Latina y Caribe",
+                    "Europa",
+                    "China",
+                    "India",
+                    "Otros",
+                ],
+                "condicional": {
+                    "trigger_key": "ci_situacion_laboral",
+                    "trigger_values": [
+                        "Empleado (asalariado público o privado) que depende de un superior que está fuera del país",
+                        "Empleado (asalariado público o privado) con un equipo de colaboradores que está total o parcialmente fuera de Uruguay",
+                    ],
+                },
+            },
+            # ── Personas en el hogar ─────────────────────────────────────────
+            {
+                "key": "ci_personas_hogar",
+                "tipo": "selectbox",
+                "texto": "¿Cuántas personas viven habitualmente en su hogar?",
+                "opciones": [str(n) for n in range(1, 16)],
+            },
+            {
+                "key": "ci_menores_14",
+                "tipo": "selectbox",
+                "texto": "Indique cuántas personas que viven en su hogar tienen menos de 14 años",
+                "opciones": [str(n) for n in range(0, 16)],
+            },
+            {
+                "key": "ci_mayores_65",
+                "tipo": "selectbox",
+                "texto": "Indique cuántas personas que viven en su hogar tienen 65 años o más",
+                "opciones": [str(n) for n in range(0, 16)],
+            },
+            # ── Rol en el hogar ──────────────────────────────────────────────
+            {
+                "key": "ci_rol_hogar",
+                "tipo": "radio",
+                "texto": "¿Cuál es la respuesta que mejor define su rol en el hogar?",
+                "opciones": [
+                    "Jefe/Jefa de hogar",
+                    "Comparten la Jefatura del Hogar",
+                    "Cónyuge del Jefe/Jefa",
+                    "Hijo/Hija",
+                    "Abuelo/Abuela",
+                    "Otro",
+                ],
+            },
+            # ── Baños y habitaciones ─────────────────────────────────────────
+            {
+                "key": "ci_total_banios",
+                "tipo": "selectbox",
+                "texto": "¿Cuál es el total de baños que tiene su hogar?",
+                "opciones": [str(n) for n in range(0, 11)],
+            },
+            {
+                "key": "ci_total_habitaciones",
+                "tipo": "selectbox",
+                "texto": "¿Cuál es el total de habitaciones que utiliza en su hogar, sin ser baño y cocina?",
+                "opciones": [str(n) for n in range(0, 16)],
+            },
+            # ── Servicio doméstico ───────────────────────────────────────────
+            {
+                "key": "ci_servicio_domestico",
+                "tipo": "radio",
+                "texto": "¿Su hogar paga (en dinero o de otra forma) a personas para que limpien la vivienda, cuiden niños o ancianos o realicen alguna tarea doméstica?",
+                "opciones": ["Sí", "No"],
+            },
+            # ── Lugar donde nació ────────────────────────────────────────────
+            {
+                "key": "ci_lugar_nacimiento",
+                "tipo": "radio",
+                "texto": "Lugar donde nació y vivió su infancia",
+                "opciones": ["Uruguay", "En el exterior"],
+            },
+            {
+                "key": "ci_nacimiento_pais",
+                "tipo": "selectbox",
+                "texto": "¿En qué país nació?",
+                "opciones": [
+                    "Argentina", "Bolivia", "Brasil", "Chile", "Colombia",
+                    "Costa Rica", "Cuba", "Ecuador", "El Salvador",
+                    "España", "Estados Unidos", "Guatemala", "Honduras",
+                    "México", "Nicaragua", "Panamá", "Paraguay", "Perú",
+                    "Portugal", "Puerto Rico", "República Dominicana",
+                    "Venezuela", "Otro",
+                ],
+                "condicional": {
+                    "trigger_key": "ci_lugar_nacimiento",
+                    "trigger_values": ["En el exterior"],
+                },
+            },
+            # ── Lugar donde vive actualmente ─────────────────────────────────
+            {
+                "key": "ci_lugar_residencia",
+                "tipo": "radio",
+                "texto": "Lugar en donde hoy vive",
+                "opciones": ["Uruguay", "En el exterior"],
+            },
+            {
+                "key": "ci_residencia_departamento",
+                "tipo": "selectbox",
+                "texto": "¿En qué departamento vive?",
+                "opciones": [
+                    "Artigas", "Canelones", "Cerro Largo", "Colonia",
+                    "Durazno", "Flores", "Florida", "Lavalleja",
+                    "Maldonado", "Montevideo", "Paysandú", "Río Negro",
+                    "Rivera", "Rocha", "Salto", "San José",
+                    "Soriano", "Tacuarembó", "Treinta y Tres",
+                ],
+                "condicional": {
+                    "trigger_key": "ci_lugar_residencia",
+                    "trigger_values": ["Uruguay"],
+                },
+            },
+            {
+                "key": "ci_residencia_pais",
+                "tipo": "selectbox",
+                "texto": "¿En qué país vive?",
+                "opciones": [
+                    "Argentina", "Bolivia", "Brasil", "Chile", "Colombia",
+                    "Costa Rica", "Cuba", "Ecuador", "El Salvador",
+                    "España", "Estados Unidos", "Guatemala", "Honduras",
+                    "México", "Nicaragua", "Panamá", "Paraguay", "Perú",
+                    "Portugal", "Puerto Rico", "República Dominicana",
+                    "Venezuela", "Otro",
+                ],
+                "condicional": {
+                    "trigger_key": "ci_lugar_residencia",
+                    "trigger_values": ["En el exterior"],
+                },
             },
         ],
     },
