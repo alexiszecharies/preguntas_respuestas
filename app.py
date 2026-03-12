@@ -1,5 +1,5 @@
 """
-Cyber Window - Encuesta multi-módulo
+Ciber Window
 Wizard paso a paso, un módulo por pantalla.
 Para actualizar preguntas: editá los MODULOS más abajo.
 """
@@ -18,7 +18,7 @@ from sheets_helper import guardar_en_google_sheets
 load_dotenv(_DIR / ".env")
 
 st.set_page_config(
-    page_title="Cyber Window · Encuesta",
+    page_title="Ciber Window · Encuesta",
     page_icon="🔐",
     layout="centered",
 )
@@ -352,10 +352,10 @@ hr { border-color: #dce4ed !important; }
 # ─────────────────────────────────────────────────────────────────────────────
 
 MODULOS = [
-    # ── MÓDULO 0: Datos del respondente ──────────────────────────────────────
+    # ── MÓDULO 0: Datos del participante ─────────────────────────────────────
     {
-        "titulo": "Datos de contacto",
-        "descripcion": "Antes de comenzar, ingresá tu email.",
+        "titulo": "Datos del participante",
+        "descripcion": "Antes de comenzar, completá tus datos.",
         "preguntas": [
             {
                 "key": "email",
@@ -363,12 +363,70 @@ MODULOS = [
                 "texto": "Email (obligatorio)",
                 "placeholder": "tu@email.com",
             },
+            {
+                "key": "demo_edad_rango",
+                "tipo": "radio",
+                "texto": "Rango de edad",
+                "opciones": [
+                    "18–24", "25–34", "35–44", "45–54", "55–64", "65 o más",
+                ],
+            },
+            {
+                "key": "demo_genero",
+                "tipo": "radio",
+                "texto": "Género",
+                "opciones": [
+                    "Masculino", "Femenino", "Otro",
+                ],
+            },
+            {
+                "key": "demo_residencia",
+                "tipo": "radio",
+                "texto": "País de residencia",
+                "opciones": ["Uruguay", "Extranjero"],
+            },
+            {
+                "key": "demo_departamento",
+                "tipo": "radio",
+                "texto": "Departamento",
+                "opciones": [
+                    "Artigas", "Canelones", "Cerro Largo", "Colonia",
+                    "Durazno", "Flores", "Florida", "Lavalleja",
+                    "Maldonado", "Montevideo", "Paysandú", "Río Negro",
+                    "Rivera", "Rocha", "Salto", "San José",
+                    "Soriano", "Tacuarembó", "Treinta y Tres",
+                ],
+                "condicional": {
+                    "trigger_key": "demo_residencia",
+                    "trigger_values": ["Uruguay"],
+                },
+            },
+            {
+                "key": "demo_ciudad",
+                "tipo": "text",
+                "texto": "Ciudad o barrio",
+                "placeholder": "Ej: Pocitos, Punta del Este...",
+            },
+            {
+                "key": "demo_nivel_educativo",
+                "tipo": "radio",
+                "texto": "Nivel educativo máximo alcanzado",
+                "opciones": [
+                    "Primaria incompleta",
+                    "Primaria completa",
+                    "Secundaria incompleta",
+                    "Secundaria completa",
+                    "Terciaria / Universitaria incompleta",
+                    "Terciaria / Universitaria completa",
+                    "Posgrado",
+                ],
+            },
         ],
     },
 
     # ── MÓDULO 1: UNESCO ──────────────────────────────────────────────────────
     {
-        "titulo": "Módulo UNESCO – Comparación Diálogo Político",
+        "titulo": "Mirada 1",
         "descripcion": "",
         "preguntas": [
             {
@@ -428,32 +486,32 @@ MODULOS = [
             },
             {
                 "key": "unesco_vf_doomscrolling",
-                "tipo": "vf",
+                "tipo": "likert",
                 "texto": "Entre las nuevas palabras añadidas al Diccionario Oxford en 2024 se encontraban «doomscrolling» y «brain-rot». Ambas son símbolos de la omnipresencia del uso poco saludable de las redes sociales impulsado por algoritmos de inteligencia artificial.",
             },
             {
                 "key": "unesco_vf_tecnologia_aprendizaje",
-                "tipo": "vf",
+                "tipo": "likert",
                 "texto": "Algunas tecnologías pueden favorecer el aprendizaje en algunos contextos, pero no cuando se usan en exceso o de forma inapropiada.",
             },
             {
                 "key": "unesco_vf_celular_clase",
-                "tipo": "vf",
+                "tipo": "likert",
                 "texto": "Tener un teléfono inteligente en clase puede interrumpir el aprendizaje.",
             },
             {
                 "key": "unesco_vf_notificaciones",
-                "tipo": "vf",
+                "tipo": "likert",
                 "texto": "Tener un teléfono móvil cerca con notificaciones es suficiente para que los estudiantes pierdan la atención de la tarea en cuestión.",
             },
             {
                 "key": "unesco_vf_prohibicion_politica",
-                "tipo": "vf",
+                "tipo": "likert",
                 "texto": "Prohibir el teléfono en el colegio es una decisión política sobre las prioridades generales de la sociedad: pone al bienestar y la educación por encima de la conveniencia inmediata de la conectividad.",
             },
             {
                 "key": "unesco_vf_refugio",
-                "tipo": "vf",
+                "tipo": "likert",
                 "texto": "Prohibir o limitar el uso de celular permite que la escuela recupere su papel como refugio de aprendizaje, libre (al menos por unas horas) de las distracciones del mundo exterior.",
             },
         ],
@@ -461,7 +519,7 @@ MODULOS = [
 
     # ── MÓDULO 2: Diario El País ──────────────────────────────────────────────
     {
-        "titulo": "Módulo Comparación con Diario El País",
+        "titulo": "Mirada 2",
         "descripcion": "",
         "preguntas": [
             {
@@ -542,7 +600,7 @@ MODULOS = [
 
     # ── MÓDULO 3: EUTIC 2024 ─────────────────────────────────────────────────
     {
-        "titulo": "Módulo Comparación con EUTIC 2024",
+        "titulo": "Mirada 3",
         "descripcion": "",
         "preguntas": [
             {
@@ -607,6 +665,7 @@ MODULOS = [
                 "opciones": [
                     "No",
                     "Sí, ChatGPT",
+                    "Sí, Claude",
                     "Sí, Gemini o Copilot",
                     "Sí, Deepseek",
                     "Sí, otras",
@@ -645,6 +704,7 @@ MODULOS = [
                     "YouTube",
                     "Spotify",
                     "Twitter / X",
+                    "TikTok",
                 ],
             },
             {
@@ -732,7 +792,7 @@ MODULOS = [
 
     # ── MÓDULO 4: McKinsey ───────────────────────────────────────────────────
     {
-        "titulo": "Módulo Comparación con McKinsey – IA en Organizaciones",
+        "titulo": "Mirada 4",
         "descripcion": "",
         "preguntas": [
             {
@@ -756,55 +816,55 @@ MODULOS = [
             {
                 "key": "mck_ia_impacto_innovacion",
                 "tipo": "slider",
-                "texto": "¿Hasta qué punto la IA impactó en los resultados del último año? – Innovación",
+                "texto": "INNOVACIÓN · ¿Hasta qué punto la IA impactó en los resultados del último año?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_empleados",
                 "tipo": "slider",
-                "texto": "¿Hasta qué punto la IA impactó en los resultados del último año? – Satisfacción de los empleados",
+                "texto": "SATISFACCIÓN DE LOS EMPLEADOS · ¿Hasta qué punto la IA impactó en los resultados del último año?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_competitiva",
                 "tipo": "slider",
-                "texto": "¿Hasta qué punto la IA impactó en los resultados del último año? – Diferenciación competitiva",
+                "texto": "DIFERENCIACIÓN COMPETITIVA · ¿Hasta qué punto la IA impactó en los resultados del último año?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_costos",
                 "tipo": "slider",
-                "texto": "¿Hasta qué punto la IA impactó en los resultados del último año? – Costos",
+                "texto": "COSTOS · ¿Hasta qué punto la IA impactó en los resultados del último año?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_rentabilidad",
                 "tipo": "slider",
-                "texto": "¿Hasta qué punto la IA impactó en los resultados del último año? – Rentabilidad",
+                "texto": "RENTABILIDAD · ¿Hasta qué punto la IA impactó en los resultados del último año?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_ingresos",
                 "tipo": "slider",
-                "texto": "¿Hasta qué punto la IA impactó en los resultados del último año? – Ingresos orgánicos",
+                "texto": "INGRESOS ORGÁNICOS · ¿Hasta qué punto la IA impactó en los resultados del último año?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_talento",
                 "tipo": "slider",
-                "texto": "¿Hasta qué punto la IA impactó en los resultados del último año? – Atracción y retención del talento",
+                "texto": "ATRACCIÓN Y RETENCIÓN DEL TALENTO · ¿Hasta qué punto la IA impactó en los resultados del último año en este aspecto?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_mercado",
                 "tipo": "slider",
-                "texto": "¿Hasta qué punto la IA impactó en los resultados del último año? – Participación de mercado",
+                "texto": "PARTICIPACIÓN DE MERCADO · ¿Hasta qué punto la IA impactó en los resultados del último año en este aspecto?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_clientes",
                 "tipo": "slider",
-                "texto": "¿Hasta qué punto la IA impactó en los resultados del último año? – Satisfacción del cliente",
+                "texto": "SATISFACCIÓN DEL CLIENTE · ¿Hasta qué punto la IA impactó en los resultados del último año en este aspecto?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
@@ -830,7 +890,7 @@ MODULOS = [
 
     # ── MÓDULO 5: Disponibilidad para aprender IA y CS ───────────────────────
     {
-        "titulo": "Módulo – Disponibilidad Real para Aprender IA y CS",
+        "titulo": "Mirada 5",
         "descripcion": "",
         "preguntas": [
             {
@@ -1115,7 +1175,7 @@ MODULOS = [
 
     # ── MÓDULO 6: Perfil de riesgo del usuario ────────────────────────────────
     {
-        "titulo": "Módulo – Perfil de Riesgo del Usuario",
+        "titulo": "Mirada 6",
         "descripcion": "",
         "preguntas": [
             {
@@ -1287,17 +1347,12 @@ MODULOS = [
                 "opciones": ["Nunca", "Ocasionalmente", "Frecuentemente", "Siempre", "No conduzco"],
             },
             {
-                "key": "perfil_menor_cargo",
-                "tipo": "radio_si_no",
-                "texto": "¿Es usted responsable de supervisar el uso de internet y dispositivos de algún menor de edad?",
-            },
-            {
                 "key": "perfil_menor_rendimiento",
                 "tipo": "radio_si_no",
                 "texto": "¿Ha visto que el «tiempo de pantalla» afecta el rendimiento académico de los niños a su cargo?",
                 "condicional": {
-                    "trigger_key": "perfil_menor_cargo",
-                    "trigger_values": ["Sí"],
+                    "trigger_key": "unesco_cuidado",
+                    "trigger_values": ["Sí, niñ@s de 6 a 12 años", "Sí, adolescentes de 12 a 18 años"],
                 },
             },
             {
@@ -1305,8 +1360,8 @@ MODULOS = [
                 "tipo": "radio_si_no",
                 "texto": "¿Ha visto que el «tiempo de pantalla» afecta el bienestar emocional de los niños a su cargo?",
                 "condicional": {
-                    "trigger_key": "perfil_menor_cargo",
-                    "trigger_values": ["Sí"],
+                    "trigger_key": "unesco_cuidado",
+                    "trigger_values": ["Sí, niñ@s de 6 a 12 años", "Sí, adolescentes de 12 a 18 años"],
                 },
             },
             {
@@ -1516,6 +1571,8 @@ def init_state():
         st.session_state.respuestas = {}
     if "enviado" not in st.session_state:
         st.session_state.enviado = False
+    if "_error_keys" not in st.session_state:
+        st.session_state._error_keys = set()
 
 init_state()
 
@@ -1546,13 +1603,24 @@ def render_pregunta(p: dict):
     if not check_condicional(p):
         return
 
-    # Etiqueta de tipo visible para el respondente
+    error_keys = st.session_state.get("_error_keys", set())
+    has_error = key in error_keys
+
+    if has_error:
+        st.markdown(
+            "<div style='border-left: 4px solid #e74c3c; padding-left: 12px; "
+            "background: rgba(231,76,60,0.06); border-radius: 4px; padding-top: 8px; "
+            "padding-bottom: 4px; margin-bottom: 4px;'>",
+            unsafe_allow_html=True,
+        )
+
     _etiquetas = {
         "checkboxes":  " *(selección múltiple)*",
         "multiselect": " *(selección múltiple)*",
         "radio":       " *(opción única)*",
         "radio_si_no": "",
         "vf":          "",
+        "likert":      "",
         "slider":      "",
         "ranking":     "",
         "text":        "",
@@ -1587,6 +1655,17 @@ def render_pregunta(p: dict):
         current = st.session_state.respuestas.get(key)
         idx = opciones.index(current) if current in opciones else None
         val = st.radio(texto, opciones, index=idx, horizontal=True, key=f"widget_{key}")
+        st.session_state.respuestas[key] = val
+
+    elif tipo == "likert":
+        opciones = [
+            "Muy de acuerdo", "De acuerdo",
+            "Ni de acuerdo ni en desacuerdo",
+            "En desacuerdo", "Muy en desacuerdo",
+        ]
+        current = st.session_state.respuestas.get(key)
+        idx = opciones.index(current) if current in opciones else None
+        val = st.radio(texto, opciones, index=idx, key=f"widget_{key}")
         st.session_state.respuestas[key] = val
 
     elif tipo == "checkboxes":
@@ -1631,10 +1710,18 @@ def render_pregunta(p: dict):
             ranking_result[lugar] = sel
         st.session_state.respuestas[key] = ranking_result
 
+    if has_error:
+        st.markdown(
+            "<span style='color:#e74c3c; font-size:0.85rem;'>⚠ Esta pregunta es obligatoria</span>"
+            "</div>",
+            unsafe_allow_html=True,
+        )
 
-def validar_modulo(modulo: dict) -> list[str]:
-    """Devuelve lista de errores de validación del módulo actual."""
+
+def validar_modulo(modulo: dict) -> tuple[list[str], set[str]]:
+    """Devuelve (lista de mensajes de error, set de keys con error)."""
     errores = []
+    keys_error = set()
     for p in modulo["preguntas"]:
         if not check_condicional(p):
             continue
@@ -1645,14 +1732,18 @@ def validar_modulo(modulo: dict) -> list[str]:
         if tipo == "text" and key == "email":
             if not val or not val.strip():
                 errores.append("El email es obligatorio.")
+                keys_error.add(key)
             elif "@" not in val:
                 errores.append("El email no parece válido.")
+                keys_error.add(key)
 
-        elif tipo in ("radio", "radio_si_no", "vf"):
+        elif tipo in ("radio", "radio_si_no", "vf", "likert"):
             if val is None:
-                errores.append(f"Falta responder: «{p['texto'][:60]}...»" if len(p['texto']) > 60 else f"Falta responder: «{p['texto']}»")
+                label = p["texto"][:60] + "..." if len(p["texto"]) > 60 else p["texto"]
+                errores.append(f"Falta responder: «{label}»")
+                keys_error.add(key)
 
-    return errores
+    return errores, keys_error
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1663,7 +1754,7 @@ def pantalla_final():
     col_logo, _ = st.columns([1, 4])
     with col_logo:
         st.image("logo_kaiden.png", width=160)
-    st.markdown("<div class='kaiden-subtext'>Cyber Window · Encuesta</div>", unsafe_allow_html=True)
+    st.markdown("<div class='kaiden-subtext'>Ciber Window</div>", unsafe_allow_html=True)
     st.divider()
     st.title("¡Muchas gracias!")
     st.markdown(
@@ -1757,7 +1848,7 @@ st.markdown("<div style='padding-top: 1.5rem;'></div>", unsafe_allow_html=True)
 col_logo, _ = st.columns([1, 4])
 with col_logo:
     st.image("logo_kaiden.png", width=160)
-st.markdown("<div class='kaiden-subtext'>Cyber Window · Encuesta</div>", unsafe_allow_html=True)
+st.markdown("<div class='kaiden-subtext'>Ciber Window</div>", unsafe_allow_html=True)
 st.divider()
 
 if st.session_state.enviado:
@@ -1768,11 +1859,21 @@ else:
     modulo = MODULOS[actual]
 
     # Barra de progreso
-    st.progress((actual) / total, text=f"Módulo {actual + 1} de {total}")
+    total_miradas = total - 1  # module 0 is data collection, not a "Mirada"
+    if actual == 0:
+        progress_text = "Datos del participante"
+    else:
+        progress_text = f"Mirada {actual}/{total_miradas}"
+    st.progress((actual) / total, text=progress_text)
 
     st.title(f"{modulo['titulo']}")
     if modulo["descripcion"]:
         st.caption(modulo["descripcion"])
+
+    # Banner de errores si hay preguntas sin contestar
+    if st.session_state._error_keys:
+        n = len(st.session_state._error_keys)
+        st.error(f"Hay {n} pregunta{'s' if n > 1 else ''} sin contestar. Están marcadas en rojo.")
 
     st.divider()
 
@@ -1787,38 +1888,34 @@ else:
     es_ultimo = actual == total - 1
     label = "Enviar respuestas ✅" if es_ultimo else "Siguiente →"
 
+    def _handle_siguiente():
+        errores, keys_error = validar_modulo(modulo)
+        if errores:
+            st.session_state._error_keys = keys_error
+            scroll_to_top()
+            st.rerun()
+        else:
+            st.session_state._error_keys = set()
+            if es_ultimo:
+                enviar_respuestas()
+            else:
+                st.session_state.modulo_actual += 1
+                scroll_to_top()
+                st.rerun()
+
     if actual > 0:
         col_prev, col_mid, col_next = st.columns([2, 1, 2])
         with col_prev:
             if st.button("← Anterior", use_container_width=True):
+                st.session_state._error_keys = set()
                 st.session_state.modulo_actual -= 1
                 scroll_to_top()
                 st.rerun()
         with col_next:
             if st.button(label, type="primary", use_container_width=True):
-                errores = validar_modulo(modulo)
-                if errores:
-                    for e in errores:
-                        st.error(e)
-                else:
-                    if es_ultimo:
-                        enviar_respuestas()
-                    else:
-                        st.session_state.modulo_actual += 1
-                        scroll_to_top()
-                        st.rerun()
+                _handle_siguiente()
     else:
         _, col_btn, _ = st.columns([1, 2, 1])
         with col_btn:
             if st.button(label, type="primary", use_container_width=True):
-                errores = validar_modulo(modulo)
-                if errores:
-                    for e in errores:
-                        st.error(e)
-                else:
-                    if es_ultimo:
-                        enviar_respuestas()
-                    else:
-                        st.session_state.modulo_actual += 1
-                        scroll_to_top()
-                        st.rerun()
+                _handle_siguiente()
