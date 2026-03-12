@@ -387,7 +387,7 @@ MODULOS = [
             },
             {
                 "key": "demo_departamento",
-                "tipo": "radio",
+                "tipo": "selectbox",
                 "texto": "Departamento",
                 "opciones": [
                     "Artigas", "Canelones", "Cerro Largo", "Colonia",
@@ -1622,6 +1622,7 @@ def render_pregunta(p: dict):
         "checkboxes":  " *(selección múltiple)*",
         "multiselect": " *(selección múltiple)*",
         "radio":       " *(opción única)*",
+        "selectbox":   "",
         "radio_si_no": "",
         "vf":          "",
         "likert":      "",
@@ -1646,6 +1647,14 @@ def render_pregunta(p: dict):
         idx = opciones.index(current) if current in opciones else None
         val = st.radio(texto, opciones, index=idx, key=f"widget_{key}")
         st.session_state.respuestas[key] = val
+
+    elif tipo == "selectbox":
+        opciones = p["opciones"]
+        current = st.session_state.respuestas.get(key)
+        options_with_placeholder = ["Seleccionar..."] + opciones
+        idx = options_with_placeholder.index(current) if current in options_with_placeholder else 0
+        val = st.selectbox(texto, options_with_placeholder, index=idx, key=f"widget_{key}")
+        st.session_state.respuestas[key] = val if val != "Seleccionar..." else None
 
     elif tipo == "radio_si_no":
         opciones = ["Sí", "No"]
@@ -1741,7 +1750,7 @@ def validar_modulo(modulo: dict) -> tuple[list[str], set[str]]:
                 errores.append("El email no parece válido.")
                 keys_error.add(key)
 
-        elif tipo in ("radio", "radio_si_no", "vf", "likert"):
+        elif tipo in ("radio", "radio_si_no", "vf", "likert", "selectbox"):
             if val is None:
                 label = p["texto"][:60] + "..." if len(p["texto"]) > 60 else p["texto"]
                 errores.append(f"Falta responder: «{label}»")
