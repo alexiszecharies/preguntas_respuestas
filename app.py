@@ -174,10 +174,9 @@ input[type="text"]:focus, textarea:focus {
 /* ── Radio buttons ── */
 [data-testid="stRadio"] > div { gap: 0.35rem; }
 [data-testid="stRadio"] label {
-    background-color: #ffffff;
-    border: 1.5px solid #c8d6e5;
-    border-radius: 8px;
-    padding: 7px 14px !important;
+    background-color: transparent;
+    border: none;
+    padding: 4px 0 !important;
     transition: all 0.15s;
     color: #0d1b2a !important;
 }
@@ -187,13 +186,12 @@ input[type="text"]:focus, textarea:focus {
     color: #0d1b2a !important;
 }
 [data-testid="stRadio"] label:hover {
-    border-color: #1ab5c8 !important;
-    background-color: #e8f8fa !important;
+    background-color: transparent !important;
 }
 [data-testid="stRadio"] label:hover p,
 [data-testid="stRadio"] label:hover div,
 [data-testid="stRadio"] label:hover span {
-    color: #0d1b2a !important;
+    color: #1ab5c8 !important;
 }
 
 /* ── Checkboxes ── */
