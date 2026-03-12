@@ -820,37 +820,37 @@ MODULOS = [
             {
                 "key": "mck_ia_impacto_innovacion",
                 "tipo": "slider",
-                "texto": "INNOVACIÓN · ¿Hasta qué punto la IA impactó en los resultados del último año?",
+                "texto": "INNOVACIÓN · ¿Hasta qué punto la IA impactó en los resultados del último año en este aspecto?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_empleados",
                 "tipo": "slider",
-                "texto": "SATISFACCIÓN DE LOS EMPLEADOS · ¿Hasta qué punto la IA impactó en los resultados del último año?",
+                "texto": "SATISFACCIÓN DE LOS EMPLEADOS · ¿Hasta qué punto la IA impactó en los resultados del último año en este aspecto?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_competitiva",
                 "tipo": "slider",
-                "texto": "DIFERENCIACIÓN COMPETITIVA · ¿Hasta qué punto la IA impactó en los resultados del último año?",
+                "texto": "DIFERENCIACIÓN COMPETITIVA · ¿Hasta qué punto la IA impactó en los resultados del último año en este aspecto?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_costos",
                 "tipo": "slider",
-                "texto": "COSTOS · ¿Hasta qué punto la IA impactó en los resultados del último año?",
+                "texto": "COSTOS · ¿Hasta qué punto la IA impactó en los resultados del último año en este aspecto?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_rentabilidad",
                 "tipo": "slider",
-                "texto": "RENTABILIDAD · ¿Hasta qué punto la IA impactó en los resultados del último año?",
+                "texto": "RENTABILIDAD · ¿Hasta qué punto la IA impactó en los resultados del último año en este aspecto?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
                 "key": "mck_ia_impacto_ingresos",
                 "tipo": "slider",
-                "texto": "INGRESOS ORGÁNICOS · ¿Hasta qué punto la IA impactó en los resultados del último año?",
+                "texto": "INGRESOS ORGÁNICOS · ¿Hasta qué punto la IA impactó en los resultados del último año en este aspecto?",
                 "min": 1, "max": 5, "labels_min": "Nada", "labels_max": "Completamente",
             },
             {
