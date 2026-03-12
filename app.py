@@ -360,13 +360,18 @@ MODULOS = [
     # ── MÓDULO 0: Datos del participante ─────────────────────────────────────
     {
         "titulo": "Datos del participante",
-        "descripcion": "Antes de comenzar, ingresá tu email.",
+        "descripcion": "Antes de comenzar, ingresá tu email y aceptá el consentimiento.",
         "preguntas": [
             {
                 "key": "email",
                 "tipo": "text",
                 "texto": "Email (obligatorio)",
                 "placeholder": "tu@email.com",
+            },
+            {
+                "key": "consentimiento",
+                "tipo": "consent",
+                "texto": "Acepto participar voluntariamente en esta encuesta y autorizo el uso de mis respuestas con fines de investigación. Mis datos serán tratados de forma confidencial.",
             },
         ],
     },
@@ -1770,10 +1775,16 @@ def render_pregunta(p: dict):
         "slider":      "",
         "ranking":     "",
         "text":        "",
+        "consent":     "",
     }
     texto = p["texto"] + _etiquetas.get(tipo, "")
 
-    if tipo == "text":
+    if tipo == "consent":
+        current = st.session_state.respuestas.get(key, False)
+        val = st.checkbox(texto, value=current, key=f"widget_{key}")
+        st.session_state.respuestas[key] = val
+
+    elif tipo == "text":
         val = st.text_input(
             texto,
             value=st.session_state.respuestas.get(key, ""),
@@ -1882,6 +1893,12 @@ def validar_modulo(modulo: dict) -> tuple[list[str], set[str]]:
         key = p["key"]
         tipo = p["tipo"]
         val = st.session_state.respuestas.get(key)
+
+        if tipo == "consent":
+            if not val:
+                errores.append("Debés aceptar el consentimiento para continuar.")
+                keys_error.add(key)
+            continue
 
         if tipo == "text" and key == "email":
             if not val or not val.strip():
