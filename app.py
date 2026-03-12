@@ -171,14 +171,20 @@ input[type="text"]:focus, textarea:focus {
     box-shadow: 0 0 0 3px rgba(26, 181, 200, 0.15) !important;
 }
 
-/* ── Radio buttons ── */
+/* ── Radio buttons (opciones con fondo blanco, pregunta sin) ── */
 [data-testid="stRadio"] > div { gap: 0.35rem; }
 [data-testid="stRadio"] label {
-    background-color: transparent;
-    border: none;
-    padding: 4px 0 !important;
+    background-color: #ffffff;
+    border: 1.5px solid #c8d6e5;
+    border-radius: 8px;
+    padding: 7px 14px !important;
     transition: all 0.15s;
     color: #0d1b2a !important;
+}
+[data-testid="stRadio"] [data-testid="stWidgetLabel"] {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
 }
 [data-testid="stRadio"] label p,
 [data-testid="stRadio"] label div,
@@ -186,12 +192,13 @@ input[type="text"]:focus, textarea:focus {
     color: #0d1b2a !important;
 }
 [data-testid="stRadio"] label:hover {
-    background-color: transparent !important;
+    border-color: #1ab5c8 !important;
+    background-color: #e8f8fa !important;
 }
 [data-testid="stRadio"] label:hover p,
 [data-testid="stRadio"] label:hover div,
 [data-testid="stRadio"] label:hover span {
-    color: #1ab5c8 !important;
+    color: #0d1b2a !important;
 }
 
 /* ── Checkboxes ── */
