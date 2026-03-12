@@ -1775,7 +1775,7 @@ def pantalla_final():
         "Tu participación nos ayuda a construir una ciudadanía digital más fuerte.</p>",
         unsafe_allow_html=True,
     )
-    st.success("Respuestas registradas en Google Sheets.")
+    st.success("Respuestas registradas.")
     st.balloons()
     if st.button("Completar otra encuesta"):
         st.session_state.modulo_actual = 0
@@ -1823,7 +1823,7 @@ def enviar_respuestas():
 
     email = st.session_state.respuestas.get("email", "")
 
-    with st.spinner("Guardando respuestas en Google Sheets..."):
+    with st.spinner("Guardando respuestas ..."):
         ok, msg = guardar_en_google_sheets(email, respuestas_planas, MASTER_COLUMNS)
 
     if ok:
