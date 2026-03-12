@@ -360,8 +360,28 @@ MODULOS = [
     # ── MÓDULO 0: Datos del participante ─────────────────────────────────────
     {
         "titulo": "Datos del participante",
-        "descripcion": "Antes de comenzar, ingresá tu email y aceptá el consentimiento.",
+        "descripcion": "",
         "preguntas": [
+            {
+                "key": "_info_encuesta",
+                "tipo": "info",
+                "texto": (
+                    "Esta encuesta forma parte de una investigación independiente sobre "
+                    "la conciencia de los ciber riesgos actuales y los hábitos digitales "
+                    "de las personas. Sus respuestas son anónimas, confidenciales y serán "
+                    "utilizadas exclusivamente con fines investigativos y educativos, en "
+                    "forma agregada.\n\n"
+                    "No hay respuestas correctas o incorrectas. Nos interesa su experiencia "
+                    "real para entender dónde estamos y cómo podemos estar mejor. En ningún "
+                    "caso se analizarán respuestas individuales ni se intentará identificar "
+                    "a quienes participan. Nunca le pediremos que escriba contraseñas, claves, "
+                    "números de cuenta ni ningún dato sensible.\n\n"
+                    "Los resultados de este estudio se consolidarán en un informe público de "
+                    "hallazgos, orientado a mejorar la prevención, la educación y las "
+                    "decisiones de cuidado digital a nivel personal, organizacional y social.\n\n"
+                    "Agradecemos el tiempo dedicado a responder los módulos de esta encuesta."
+                ),
+            },
             {
                 "key": "email",
                 "tipo": "text",
@@ -369,9 +389,41 @@ MODULOS = [
                 "placeholder": "tu@email.com",
             },
             {
+                "key": "_info_consentimiento",
+                "tipo": "info",
+                "texto": "**CONSENTIMIENTO INFORMADO:**\n\nHe leído la información anterior y acepto participar voluntariamente en esta encuesta, comprendiendo el uso anónimo y agregado de mis respuestas.",
+            },
+            {
                 "key": "consentimiento",
                 "tipo": "consent",
-                "texto": "Acepto participar voluntariamente en esta encuesta y autorizo el uso de mis respuestas con fines de investigación. Mis datos serán tratados de forma confidencial.",
+                "texto": "Sí, acepto",
+                "obligatorio": True,
+            },
+            {
+                "key": "contacto_posterior",
+                "tipo": "consent",
+                "texto": "Quiero ser contactado posteriormente a los efectos de validación y auditoría de los resultados vía:",
+                "obligatorio": False,
+            },
+            {
+                "key": "contacto_mail",
+                "tipo": "text",
+                "texto": "Mail de contacto",
+                "placeholder": "tu@email.com",
+                "condicional": {
+                    "trigger_key": "contacto_posterior",
+                    "trigger_values": [True],
+                },
+            },
+            {
+                "key": "contacto_wapp",
+                "tipo": "text",
+                "texto": "WhatsApp",
+                "placeholder": "+598 99 123 456",
+                "condicional": {
+                    "trigger_key": "contacto_posterior",
+                    "trigger_values": [True],
+                },
             },
         ],
     },
@@ -1776,10 +1828,17 @@ def render_pregunta(p: dict):
         "ranking":     "",
         "text":        "",
         "consent":     "",
+        "info":        "",
     }
     texto = p["texto"] + _etiquetas.get(tipo, "")
 
-    if tipo == "consent":
+    if tipo == "info":
+        st.markdown(texto)
+        if has_error:
+            st.markdown("</div>", unsafe_allow_html=True)
+        return
+
+    elif tipo == "consent":
         current = st.session_state.respuestas.get(key, False)
         val = st.checkbox(texto, value=current, key=f"widget_{key}")
         st.session_state.respuestas[key] = val
@@ -1894,8 +1953,8 @@ def validar_modulo(modulo: dict) -> tuple[list[str], set[str]]:
         tipo = p["tipo"]
         val = st.session_state.respuestas.get(key)
 
-        if tipo == "consent":
-            if not val:
+        if tipo in ("consent", "info"):
+            if tipo == "consent" and p.get("obligatorio", True) and not val:
                 errores.append("Debés aceptar el consentimiento para continuar.")
                 keys_error.add(key)
             continue
@@ -1955,6 +2014,8 @@ def _build_master_columns() -> list[str]:
     cols = []
     for modulo in MODULOS:
         for p in modulo["preguntas"]:
+            if p["tipo"] == "info":
+                continue
             if p["tipo"] == "ranking":
                 for i in range(1, len(p["opciones"]) + 1):
                     lugar = ["1er lugar", "2do lugar", "3er lugar", "4to lugar"][i - 1]
