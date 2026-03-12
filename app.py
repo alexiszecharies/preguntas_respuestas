@@ -406,6 +406,10 @@ MODULOS = [
                 "tipo": "text",
                 "texto": "Ciudad o barrio",
                 "placeholder": "Ej: Pocitos, Punta del Este...",
+                "condicional": {
+                    "trigger_key": "demo_residencia",
+                    "trigger_values": ["Uruguay"],
+                },
             },
             {
                 "key": "demo_nivel_educativo",
